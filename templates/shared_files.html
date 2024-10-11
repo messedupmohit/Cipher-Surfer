@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Files Shared with Me</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Background and font styling for consistency */
+        body {
+            background-image: url("{{ url_for('static', filename='images/blue_background2.jpeg') }}");
+            background-size: cover;
+            background-position: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #FFFFFF;
+            /* White text color */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            position: relative;
+        }
+
+        .cipher-surfer,
+        .home-btn {
+            position: absolute;
+            top: 20px;
+            font-family: 'Times New Roman', serif;
+            font-size: 14px;
+            color: #FFFFFF;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+            padding: 8px 12px;
+            border-radius: 5px;
+        }
+
+        .home-btn {
+            left: 20px;
+            background-color: #1F4959;
+        }
+
+        .home-btn:hover {
+            background-color: #5C7689;
+        }
+
+        .cipher-surfer {
+            right: 20px;
+            background-color: #242424;
+        }
+
+        .cipher-surfer:hover {
+            background-color: #FFFFFF;
+            color: #242424;
+        }
+
+        .container {
+            max-width: 800px;
+            margin-top: 50px;
+            background-color: rgba(1, 20, 37, 0.85);
+            /* Dark navy background with transparency */
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            /* Subtle shadow for depth */
+        }
+
+        h2 {
+            font-weight: 700;
+            margin-bottom: 30px;
+            color: #FFFFFF;
+            text-align: center;
+        }
+
+        .list-group-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background-color: #f4f6f9;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            border: none;
+            color: #333;
+        }
+
+        .list-group-item:hover {
+            background-color: #e0e0e0;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn {
+            font-size: 14px;
+            padding: 8px 12px;
+            margin-left: 5px;
+        }
+
+        .form-control {
+            display: inline-block;
+            width: auto;
+            vertical-align: middle;
+            margin-right: 10px;
+        }
+
+        .no-files-message {
+            text-align: center;
+            color: #CCCCCC;
+            /* Lighter text for the no files message */
+            font-size: 18px;
+            margin-top: 50px;
+        }
+
+        .alert {
+            border-radius: 5px;
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Cipher Surfer Text -->
+    <a href="{{ url_for('home_view') }}" class="cipher-surfer">CIPHER SURFER</a>
+
+    <!-- Home Button -->
+    <a href="{{ url_for('home_view') }}" class="home-btn"><i class="fas fa-home"></i> Home</a>
+
+    <div class="container">
+        <!-- Flash messages for feedback -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div class="alert alert-{{ category }} mt-4">{{ message }}</div>
+        {% endif %}
+        {% endwith %}
+
+        <h2>Files Shared with Me</h2>
+
+        <!-- No Files Message -->
+        {% if shared_files|length == 0 %}
+        <div class="no-files-message">
+            <p>No files available to show.</p>
+        </div>
+        {% else %}
+        <!-- List of Shared Files -->
+        <ul class="list-group">
+            {% for file in shared_files %}
+            <li class="list-group-item">
+                <span>{{ file.filename }}</span>
+                <div>
+                    <form method="POST" action="{{ url_for('decrypt_file', file_id=file.id) }}" class="d-inline-block">
+                        <input type="text" name="decryption_key" placeholder="Enter Decryption Key" required
+                            class="form-control">
+                        <button type="submit" class="btn btn-success">Decrypt & Download</button>
+                    </form>
+                    <form method="POST" action="{{ url_for('delete_shared_file', file_id=file.id) }}"
+                        class="d-inline-block">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+        <!-- Back to Home Button -->
+        <div class="row mt-4">
+            <div class="col-md-12 text-right">
+                <a href="{{ url_for('home_view') }}" class="btn btn-secondary">Back to Home</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- JS and Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>

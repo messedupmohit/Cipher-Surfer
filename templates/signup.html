@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-image: url("{{ url_for('static', filename='images/blue_background2.jpeg') }}");
+            background-size: cover;
+            background-position: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #FFFFFF;
+            /* White text color */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .nav-link {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-family: 'Times New Roman', serif;
+            font-size: 36px;
+            color: #FFFFFF;
+            font-weight: 700;
+            background-color: rgba(0, 0, 0, 0.6);
+            /* Transparent blue background */
+            padding: 10px;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+
+        .signup-container {
+            background-color: rgba(1, 20, 37, 0.85);
+            /* Dark navy background with transparency */
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+            max-width: 450px;
+            width: 100%;
+            text-align: center;
+            margin-top: 100px;
+            /* Space to account for the nav link */
+        }
+
+        h2 {
+            font-weight: 700;
+            color: #FFFFFF;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-control {
+            height: 45px;
+            border-radius: 5px;
+            font-size: 16px;
+            background-color: #f4f6f9;
+        }
+
+        .btn-primary {
+            background-color: #1F4959;
+            border: none;
+            height: 45px;
+            border-radius: 5px;
+            font-size: 16px;
+            width: 100%;
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background-color: #5C7689;
+        }
+
+        .alert-danger {
+            font-size: 14px;
+        }
+
+        .text-primary {
+            color: #007bff;
+        }
+
+        .text-primary:hover {
+            color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+    <a href="{{ url_for('index') }}" class="nav-link">CIPHER SURFER</a>
+
+    <div class="signup-container">
+        <h2>Create Your Account</h2>
+
+        <!-- Display general error messages -->
+        {% with messages = get_flashed_messages(with_categories=True) %}
+        {% if messages %}
+        <div class="flash-messages">
+            {% for category, message in messages %}
+            <div class="flash-message alert alert-{{ category }} mt-2">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+
+        <form method="POST" action="{{ url_for('signup') }}">
+            {{ form.hidden_tag() }}
+
+            <div class="form-group">
+                {{ form.username.label(class="form-label", style="color: #FFFFFF;") }}
+                {{ form.username(class="form-control") }}
+                {% for error in form.username.errors %}
+                <div class="alert alert-danger mt-2">{{ error }}</div>
+                {% endfor %}
+            </div>
+
+            <div class="form-group">
+                {{ form.email.label(class="form-label", style="color: #FFFFFF;") }}
+                {{ form.email(class="form-control") }}
+                {% for error in form.email.errors %}
+                <div class="alert alert-danger mt-2">{{ error }}</div>
+                {% endfor %}
+            </div>
+
+            <div class="form-group">
+                {{ form.password.label(class="form-label", style="color: #FFFFFF;") }}
+                {{ form.password(class="form-control") }}
+                {% for error in form.password.errors %}
+                <div class="alert alert-danger mt-2">{{ error }}</div>
+                {% endfor %}
+            </div>
+
+            <div class="form-group">
+                {{ form.confirm_password.label(class="form-label", style="color: #FFFFFF;") }}
+                {{ form.confirm_password(class="form-control") }}
+                {% for error in form.confirm_password.errors %}
+                <div class="alert alert-danger mt-2">{{ error }}</div>
+                {% endfor %}
+            </div>
+
+            <div class="form-group text-center">
+                {{ form.submit(class="btn btn-primary btn-block") }}
+            </div>
+        </form>
+
+        <p class="text-center mt-3">Already have an account? <a href="{{ url_for('signin') }}" class="text-primary">Sign
+                In</a></p>
+    </div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <!-- Popper.js, required for Bootstrap dropdowns -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://unpkg.com/popper.js@1/dist/umd/popper.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>

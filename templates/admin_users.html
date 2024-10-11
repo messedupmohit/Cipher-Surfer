@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - User List</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+
+<body class="admin-users-page">
+    <div class="container">
+        <h1 class="title">Admin - List of Users</h1>
+        <ul class="user-list">
+            {% for user in users %}
+            <li class="user-item">
+                <a href="{{ url_for('admin.user_profile', user_id=user.id) }}" class="user-link">{{ user.username }}</a>
+                - {{ user.email }}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+
+</html>
